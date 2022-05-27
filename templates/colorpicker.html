@@ -11,14 +11,13 @@
 </head>
 <body>
 
-<div class="container-fluid">
-    <input class="form-control" type="text" placeholder="Client name..." style="margin-top: 15px;">
-    <input class="btn btn-primary" type="submit" value="Submit" style="margin-top: 15px;">
-</div>
+<form method="POST">
 
-<div class="container-fluid">
-    <button class="pickr" style="margin-top: 15px;">Choose Color</button>
-</div>
+  <label for="colorpicker">Choose a Color</label>
+  <input type="color" id="colorpicker" name="colorpicker">
+  <input class="btn btn-primary" type="submit" value="Submit">
+  
+</form>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
