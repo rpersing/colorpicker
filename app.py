@@ -1,7 +1,24 @@
 from flask import Flask, render_template, request, send_file
 import uuid
 import os
-from webcolors import hex_to_name
+from webcolors import hex_to_name, CSS3_HEX_TO_NAMES, hex_to_rgb
+from scipy.spatial import KDTree
+
+def convert_rgb_to_names(rgb_tuple):
+
+    css3_db = CSS3_HEX_TO_NAMES
+    names = []
+    rgb_values = []
+
+    for color_hex, color_name in css3_db.items():
+        names.append(color_name)
+        rgb_values.append(hex_to_rgb(color_hex))
+
+    kdt_db = KDTree(rgb_values)
+
+    distance, index = kdt_db.query(rgb_tuple)
+
+    return names[index]
 
 def delete_css_file():
         if os.path.exists("style.css"):
@@ -36,7 +53,8 @@ def download():
         client_name = request.form["clientname"]
         f = open("style.css", "w")
         for hex in hex_list:
-            color_name = hex_to_name(hex)
+            converted_hex = hex_to_rgb(hex)
+            color_name = convert_rgb_to_names(converted_hex)
             f.write(f""".bg-{client_name}-{color_name} {{\n    background-color: {hex};\n}}\n\n""")
         f.close()
         return render_template("download.html", client_name=client_name)
