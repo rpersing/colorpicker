@@ -3,13 +3,16 @@ import uuid
 import os
 from webcolors import hex_to_name
 
+def delete_css_file():
+        if os.path.exists("style.css"):
+            os.remove("style.css")
 
 app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
 def parameters():
-    if os.path.exists("style.css"):
-        os.remove("style.css")
+
+    delete_css_file()
 
     return render_template("parameters.html")
 
@@ -34,11 +37,12 @@ def download():
         f = open("style.css", "w")
         for hex in hex_list:
             color_name = hex_to_name(hex)
-            f.write(f""".bg-{client_name}-{color_name} {{background-color: {hex};}}\n""")
+            f.write(f""".bg-{client_name}-{color_name} {{\n    background-color: {hex};\n}}\n\n""")
         f.close()
         return render_template("download.html", client_name=client_name)
 
     return render_template("download.html")
+
 
 @app.route("/download_file")
 def download_file():
