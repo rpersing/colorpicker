@@ -1,5 +1,4 @@
-from turtle import color
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, send_file
 import uuid
 import os
 from webcolors import hex_to_name
@@ -24,8 +23,8 @@ def colorpicker():
 
     return render_template("colorpicker.html")
 
-@app.route("/css-file", methods=["GET", "POST"])
-def css_file():
+@app.route("/download", methods=["GET", "POST"])
+def download():
 
     if request.method == "POST":
         hex_list = list(request.form.values())
@@ -40,3 +39,7 @@ def css_file():
         return render_template("download.html", client_name=client_name)
 
     return render_template("download.html")
+
+@app.route("/download_file")
+def download_file():
+    return send_file("style.css")
